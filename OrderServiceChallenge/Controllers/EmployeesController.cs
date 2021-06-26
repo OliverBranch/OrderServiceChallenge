@@ -61,8 +61,7 @@ namespace OrderServiceChallenge.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(employee);
-                await _context.SaveChangesAsync();
+                _employeeService.Insert(employee);
                 return RedirectToAction(nameof(Index));
             }
             return View(employee);
@@ -127,8 +126,7 @@ namespace OrderServiceChallenge.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employee
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var employee =  _employeeService.FindById(id.Value);
             if (employee == null)
             {
                 return NotFound();
@@ -142,9 +140,7 @@ namespace OrderServiceChallenge.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var employee = await _context.Employee.FindAsync(id);
-            _context.Employee.Remove(employee);
-            await _context.SaveChangesAsync();
+            _employeeService.Remove(id);
             return RedirectToAction(nameof(Index));
         }
 
