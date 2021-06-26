@@ -7,5 +7,10 @@ namespace OrderServiceChallenge.Models
 {
     public class Company: LegalPerson
     {
+        public Company()
+        {
+
+        }
+
     }
 }

@@ -7,22 +7,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OrderServiceChallenge.Data;
 using OrderServiceChallenge.Models;
+using OrderServiceChallenge.Services;
 
 namespace OrderServiceChallenge.Controllers
 {
     public class EmployeesController : Controller
     {
         private readonly OrderServiceChallengeContext _context;
+        private readonly EmployeeService _employeeService;
 
-        public EmployeesController(OrderServiceChallengeContext context)
+        public EmployeesController(EmployeeService employeeService)
         {
-            _context = context;
+            _employeeService = employeeService;
         }
 
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Employee.ToListAsync());
+            var list = _employeeService.FindAllAsync();
+            return View(list);
         }
 
         // GET: Employees/Details/5

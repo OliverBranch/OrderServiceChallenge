@@ -14,10 +14,10 @@ namespace OrderServiceChallenge.Data
         {
         }
 
-        public DbSet<OrderServiceChallenge.Models.Employee> Employee { get; set; }
+        public DbSet<Employee> Employee { get; set; }
 
-        public DbSet<OrderServiceChallenge.Models.LegalPerson> LegalPerson { get; set; }
+        public DbSet<LegalPerson> LegalPerson { get; set; }
 
-        public DbSet<OrderServiceChallenge.Models.Company> Company { get; set; }
+        public DbSet<Company> Company { get; set; }
     }
 }

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using OrderServiceChallenge.Data;
+using OrderServiceChallenge.Services;
 
 namespace OrderServiceChallenge
 {
@@ -39,6 +40,8 @@ namespace OrderServiceChallenge
             services.AddDbContext<OrderServiceChallengeContext>(options =>
             options.UseMySql(Configuration.GetConnectionString("OrderServiceChallengeContext"), builder =>
 builder.MigrationsAssembly("OrderServiceChallenge")));
+
+            services.AddScoped<EmployeeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
