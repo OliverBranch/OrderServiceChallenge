@@ -13,7 +13,6 @@ namespace OrderServiceChallenge.Controllers
 {
     public class EmployeesController : Controller
     {
-        private readonly OrderServiceChallengeContext _context;
         private readonly EmployeeService _employeeService;
 
         public EmployeesController(EmployeeService employeeService)
@@ -24,7 +23,7 @@ namespace OrderServiceChallenge.Controllers
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            var list = _employeeService.FindAllAsync();
+            var list = await _employeeService.FindAllAsync();
             return View(list);
         }
 
@@ -36,7 +35,7 @@ namespace OrderServiceChallenge.Controllers
                 return NotFound();
             }
 
-            var employee = _employeeService.FindById(id.Value);
+            var employee = await _employeeService.FindByIdAsync(id.Value);
             if (employee == null)
             {
                 return NotFound();
@@ -60,7 +59,7 @@ namespace OrderServiceChallenge.Controllers
         {
             if (ModelState.IsValid)
             {
-                _employeeService.Insert(employee);
+                await _employeeService.InsertAsync(employee);
                 return RedirectToAction(nameof(Index));
             }
             return View(employee);
@@ -74,7 +73,7 @@ namespace OrderServiceChallenge.Controllers
                 return NotFound();
             }
 
-            var employee = _employeeService.FindById(id.Value);
+            var employee = await _employeeService.FindByIdAsync(id.Value);
             if (employee == null)
             {
                 return NotFound();
@@ -98,11 +97,11 @@ namespace OrderServiceChallenge.Controllers
             {
                 try
                 {
-                    _employeeService.Update(employee);
+                    await _employeeService.UpdateAsync(employee);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmployeeExists(employee.Id))
+                    if (! _employeeService.EmployeeExists(employee.Id))
                     {
                         return NotFound();
                     }
@@ -124,7 +123,7 @@ namespace OrderServiceChallenge.Controllers
                 return NotFound();
             }
 
-            var employee =  _employeeService.FindById(id.Value);
+            var employee = await _employeeService.FindByIdAsync(id.Value);
             if (employee == null)
             {
                 return NotFound();
@@ -138,13 +137,9 @@ namespace OrderServiceChallenge.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            _employeeService.Remove(id);
+            await _employeeService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EmployeeExists(int id)
-        {
-            return _context.Employee.Any(e => e.Id == id);
-        }
     }
 }

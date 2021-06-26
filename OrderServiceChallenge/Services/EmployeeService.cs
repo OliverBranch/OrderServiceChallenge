@@ -23,7 +23,7 @@ namespace OrderServiceChallenge.Services
             return await _context.Employee.ToListAsync();
         }
 
-        public async void InsertAsync(Employee obj)
+        public async Task InsertAsync(Employee obj)
         {
             _context.Add(obj);
             await _context.SaveChangesAsync();
@@ -43,7 +43,7 @@ namespace OrderServiceChallenge.Services
 
         public async Task UpdateAsync(Employee obj)
         {
-            bool hasAny = await _context.Employee.AnyAsync(x => x.Id == obj.Id);
+            bool hasAny = _context.Employee.Any(x => x.Id == obj.Id);
             if(!hasAny)
             {
                 throw new NotFoundException("Id not found");
@@ -59,6 +59,11 @@ namespace OrderServiceChallenge.Services
 
             }
 
+        }
+
+        public bool EmployeeExists(int id)
+        {
+            return _context.Employee.Any(e => e.Id == id);
         }
 
     }
