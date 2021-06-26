@@ -13,5 +13,12 @@ namespace OrderServiceChallenge.Models
         {
 
         }
+
+        public Employee(string name, string cpf)
+        {
+            Name = name;
+            CPF = cpf;
+        }
+
     }
 }

@@ -36,8 +36,7 @@ namespace OrderServiceChallenge.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employee
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var employee = _employeeService.FindById(id.Value);
             if (employee == null)
             {
                 return NotFound();
@@ -75,7 +74,7 @@ namespace OrderServiceChallenge.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employee.FindAsync(id);
+            var employee = _employeeService.FindById(id.Value);
             if (employee == null)
             {
                 return NotFound();
@@ -99,8 +98,7 @@ namespace OrderServiceChallenge.Controllers
             {
                 try
                 {
-                    _context.Update(employee);
-                    await _context.SaveChangesAsync();
+                    _employeeService.Update(employee);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
