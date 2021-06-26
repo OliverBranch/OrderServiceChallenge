@@ -37,7 +37,8 @@ namespace OrderServiceChallenge
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddDbContext<OrderServiceChallengeContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("OrderServiceChallengeContext")));
+            options.UseMySql(Configuration.GetConnectionString("OrderServiceChallengeContext"), builder =>
+builder.MigrationsAssembly("OrderServiceChallenge")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

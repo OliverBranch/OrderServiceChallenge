@@ -15,5 +15,9 @@ namespace OrderServiceChallenge.Data
         }
 
         public DbSet<OrderServiceChallenge.Models.Employee> Employee { get; set; }
+
+        public DbSet<OrderServiceChallenge.Models.LegalPerson> LegalPerson { get; set; }
+
+        public DbSet<OrderServiceChallenge.Models.Company> Company { get; set; }
     }
 }
