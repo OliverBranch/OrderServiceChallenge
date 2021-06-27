@@ -1,4 +1,4 @@
-﻿@model OrderServiceChallenge.Models.OrderService
+﻿@model OrderServiceChallenge.Models.ViewModels.OrderServiceViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -13,24 +13,36 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="NumberOS" class="control-label"></label>
-                <input asp-for="NumberOS" class="form-control" />
-                <span asp-validation-for="NumberOS" class="text-danger"></span>
+                <label asp-for="OrderService.NumberOS" class="control-label"></label>
+                <input asp-for="OrderService.NumberOS" class="form-control" />
+                <span asp-validation-for="OrderService.NumberOS" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ServiceTitle" class="control-label"></label>
-                <input asp-for="ServiceTitle" class="form-control" />
-                <span asp-validation-for="ServiceTitle" class="text-danger"></span>
+                <label asp-for="OrderService.ServiceTitle" class="control-label"></label>
+                <input asp-for="OrderService.ServiceTitle" class="form-control" />
+                <span asp-validation-for="OrderService.ServiceTitle" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Value" class="control-label"></label>
-                <input asp-for="Value" class="form-control" />
-                <span asp-validation-for="Value" class="text-danger"></span>
+                <label asp-for="OrderService.Value" class="control-label"></label>
+                <input asp-for="OrderService.Value" class="form-control" />
+                <span asp-validation-for="OrderService.Value" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ExecutionDate" class="control-label"></label>
-                <input asp-for="ExecutionDate" class="form-control" />
-                <span asp-validation-for="ExecutionDate" class="text-danger"></span>
+                <label asp-for="OrderService.ExecutionDate" class="control-label"></label>
+                <input asp-for="OrderService.ExecutionDate" class="form-control" />
+                <span asp-validation-for="OrderService.ExecutionDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="OrderService.EmployeeId" class="control-label"></label>
+                <select asp-for="OrderService.EmployeeId" asp-items="@(new SelectList(Model.Employees,"Id",
+"Name"))" class="form-control"></select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="OrderService.CompanyId" class="control-label"></label>
+                <select asp-for="OrderService.CompanyId" asp-items="@(new SelectList(Model.Companies,"Id",
+"Name"))" class="form-control"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />

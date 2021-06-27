@@ -9,7 +9,7 @@ using OrderServiceChallenge.Data;
 namespace OrderServiceChallenge.Migrations
 {
     [DbContext(typeof(OrderServiceChallengeContext))]
-    [Migration("20210627183522_Initial")]
+    [Migration("20210627190243_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,9 +59,9 @@ namespace OrderServiceChallenge.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("CompanyId");
+                    b.Property<int>("CompanyId");
 
-                    b.Property<int?>("EmployeeId");
+                    b.Property<int>("EmployeeId");
 
                     b.Property<DateTime>("ExecutionDate");
 
@@ -94,11 +94,13 @@ namespace OrderServiceChallenge.Migrations
                 {
                     b.HasOne("OrderServiceChallenge.Models.Company", "Company")
                         .WithMany()
-                        .HasForeignKey("CompanyId");
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("OrderServiceChallenge.Models.Employee", "Employee")
                         .WithMany()
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

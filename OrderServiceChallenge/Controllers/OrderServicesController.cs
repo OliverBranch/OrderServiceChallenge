@@ -7,22 +7,31 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OrderServiceChallenge.Data;
 using OrderServiceChallenge.Models;
+using OrderServiceChallenge.Services;
+using OrderServiceChallenge.Models.ViewModels;
 
 namespace OrderServiceChallenge.Controllers
 {
     public class OrderServicesController : Controller
     {
+        private readonly OrderServiceService _orderServiceService;
+        private readonly EmployeeService _employeeService;
+        private readonly CompanyService _companyService;
         private readonly OrderServiceChallengeContext _context;
 
-        public OrderServicesController(OrderServiceChallengeContext context)
+        public OrderServicesController(OrderServiceService orderServiceService, EmployeeService employeeService, CompanyService companyService)
         {
-            _context = context;
+            _orderServiceService = orderServiceService;
+            _employeeService = employeeService;
+            _companyService = companyService;
+
         }
 
         // GET: OrderServices
         public async Task<IActionResult> Index()
         {
-            return View(await _context.OrderService.ToListAsync());
+            var list = await _orderServiceService.FindAllAsync();
+            return View(list);
         }
 
         // GET: OrderServices/Details/5
@@ -44,9 +53,12 @@ namespace OrderServiceChallenge.Controllers
         }
 
         // GET: OrderServices/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var employees = await _employeeService.FindAllAsync();
+            var companies = await _companyService.FindAllAsync();
+            var viewModel = new OrderServiceViewModel { Employees = employees, Companies = companies };
+            return View(viewModel);
         }
 
         // POST: OrderServices/Create
@@ -54,12 +66,11 @@ namespace OrderServiceChallenge.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NumberOS,ServiceTitle,Value,ExecutionDate")] OrderService orderService)
+        public async Task<IActionResult> Create(OrderService orderService)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(orderService);
-                await _context.SaveChangesAsync();
+                await _orderServiceService.InsertAsync(orderService);
                 return RedirectToAction(nameof(Index));
             }
             return View(orderService);

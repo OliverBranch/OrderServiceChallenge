@@ -8,14 +8,14 @@ namespace OrderServiceChallenge.Models
     public class OrderService
     {
         public int Id { get; set; }
-        //public int CompanyId { get; set; }
-        //public int EmployeeId { get; set; }
         public string NumberOS { get; set; }
         public string ServiceTitle { get; set; }
         public double Value { get; set; }
         public DateTime ExecutionDate { get; set; }
         public Employee Employee { get; set; }
+        public int EmployeeId { get; set; }
         public Company Company { get; set; }
+        public int CompanyId { get; set; }
 
         public OrderService()
         {

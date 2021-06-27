@@ -48,8 +48,8 @@ namespace OrderServiceChallenge.Migrations
                     ServiceTitle = table.Column<string>(nullable: true),
                     Value = table.Column<double>(nullable: false),
                     ExecutionDate = table.Column<DateTime>(nullable: false),
-                    EmployeeId = table.Column<int>(nullable: true),
-                    CompanyId = table.Column<int>(nullable: true)
+                    EmployeeId = table.Column<int>(nullable: false),
+                    CompanyId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,13 +59,13 @@ namespace OrderServiceChallenge.Migrations
                         column: x => x.CompanyId,
                         principalTable: "LegalPerson",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_OrderService_Employee_EmployeeId",
                         column: x => x.EmployeeId,
                         principalTable: "Employee",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

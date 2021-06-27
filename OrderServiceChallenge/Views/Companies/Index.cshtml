@@ -6,35 +6,12 @@
 
 <h2>Index</h2>
 
-<script>
-    jQuery(function ($) {
-        $("input[name='cep']").change(function () {
-            var cep_code = $(this).val();
-            if (cep_code.length <= 0) return;
-            $.get("http://apps.widnet.com.br/busca-cep/api/cep.json", { code: cep_code }, function (result) {
-                if (result.status != 1) {
-                    alert(result.message || "Error");
-                    return;
-                }
-                $(input[name = 'cep']).val(result.code);
-                $(input[name = 'state']).val(result.state);
-                $(input[name = 'city']).val(result.city);
-                $(input[name = 'district']).val(result.district);
-                $(input[name = 'address']).val(result.address);
-            });
-
-
-        });
-
-    });
-</script>
-
 <p>
     <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
-        <tr>
+        <tr class="success">
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
