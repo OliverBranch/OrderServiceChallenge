@@ -10,6 +10,7 @@ using OrderServiceChallenge.Models;
 using OrderServiceChallenge.Services;
 using OrderServiceChallenge.Models.ViewModels;
 using OrderServiceChallenge.Services.Exceptions;
+using System.Diagnostics;
 
 namespace OrderServiceChallenge.Controllers
 {
@@ -18,7 +19,6 @@ namespace OrderServiceChallenge.Controllers
         private readonly OrderServiceService _orderServiceService;
         private readonly EmployeeService _employeeService;
         private readonly CompanyService _companyService;
-        private readonly OrderServiceChallengeContext _context;
 
         public OrderServiceViewModel OrderServiceViewModel { get; private set; }
 
@@ -42,13 +42,14 @@ namespace OrderServiceChallenge.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
             var orderService = await _orderServiceService.FindByIdAsync(id.Value);
             if (orderService == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
 
             return View(orderService);
@@ -83,13 +84,13 @@ namespace OrderServiceChallenge.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
             var orderService = await _orderServiceService.FindByIdAsync(id.Value);
             if (orderService == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
             List<Employee> employees = await _employeeService.FindAllAsync();
             List<Company> companies = await _companyService.FindAllAsync();
@@ -106,7 +107,7 @@ namespace OrderServiceChallenge.Controllers
         {
             if (id != orderService.Id)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
             }
 
             try
@@ -114,13 +115,13 @@ namespace OrderServiceChallenge.Controllers
                 await _orderServiceService.UpdateAsync(orderService);
                 return RedirectToAction(nameof(Index));
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException e)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = e.Message });
             }
-            catch (NotFoundException)
+            catch (NotFoundException e)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = e.Message });
             }
         }
 
@@ -129,13 +130,14 @@ namespace OrderServiceChallenge.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
             var orderService = await _orderServiceService.FindByIdAsync(id.Value);
             if (orderService == null)
             {
-                return NotFound();
+                
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
 
             return View(orderService);
@@ -150,9 +152,16 @@ namespace OrderServiceChallenge.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool OrderServiceExists(int id)
+
+
+        public IActionResult Error(string message)
         {
-            return _context.OrderService.Any(e => e.Id == id);
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return View(viewModel);
         }
     }
 }
