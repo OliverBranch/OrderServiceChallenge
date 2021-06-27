@@ -7,22 +7,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OrderServiceChallenge.Data;
 using OrderServiceChallenge.Models;
+//using OrderServiceChallenge.Models.Interfaces;
+using OrderServiceChallenge.Services;
+//using Refit;
 
 namespace OrderServiceChallenge.Controllers
 {
     public class CompaniesController : Controller
     {
-        private readonly OrderServiceChallengeContext _context;
+        private readonly CompanyService _companyService;
 
-        public CompaniesController(OrderServiceChallengeContext context)
+        public CompaniesController(CompanyService companyService)
         {
-            _context = context;
+            _companyService = companyService;
         }
-
+        
         // GET: Companies
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Company.ToListAsync());
+            var list = await _companyService.FindAllAsync();
+            return View(list);
         }
 
         // GET: Companies/Details/5
@@ -33,13 +37,11 @@ namespace OrderServiceChallenge.Controllers
                 return NotFound();
             }
 
-            var company = await _context.Company
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var company = await _companyService.FindByIdAsync(id.Value);
             if (company == null)
             {
                 return NotFound();
             }
-
             return View(company);
         }
 
@@ -58,8 +60,7 @@ namespace OrderServiceChallenge.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(company);
-                await _context.SaveChangesAsync();
+                await _companyService.InsertAsync(company);
                 return RedirectToAction(nameof(Index));
             }
             return View(company);
@@ -73,7 +74,7 @@ namespace OrderServiceChallenge.Controllers
                 return NotFound();
             }
 
-            var company = await _context.Company.FindAsync(id);
+            var company = await _companyService.FindByIdAsync(id.Value);
             if (company == null)
             {
                 return NotFound();
@@ -97,12 +98,11 @@ namespace OrderServiceChallenge.Controllers
             {
                 try
                 {
-                    _context.Update(company);
-                    await _context.SaveChangesAsync();
+                   await _companyService.UpdateAsync(company);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CompanyExists(company.Id))
+                    if (!_companyService.CompanyExists(company.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +124,7 @@ namespace OrderServiceChallenge.Controllers
                 return NotFound();
             }
 
-            var company = await _context.Company
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var company = await _companyService.FindByIdAsync(id.Value);
             if (company == null)
             {
                 return NotFound();
@@ -139,15 +138,9 @@ namespace OrderServiceChallenge.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var company = await _context.Company.FindAsync(id);
-            _context.Company.Remove(company);
-            await _context.SaveChangesAsync();
+            await _companyService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CompanyExists(int id)
-        {
-            return _context.Company.Any(e => e.Id == id);
-        }
     }
 }

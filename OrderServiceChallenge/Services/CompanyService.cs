@@ -22,7 +22,7 @@ namespace OrderServiceChallenge.Services
             return await _context.Company.ToListAsync();
         }
 
-        public async void InsertAsync(Company obj)
+        public async Task InsertAsync(Company obj)
         {
             _context.Add(obj);
             await _context.SaveChangesAsync();
@@ -58,6 +58,10 @@ namespace OrderServiceChallenge.Services
 
             }
 
+        }
+        public bool CompanyExists(int id)
+        {
+            return _context.Company.Any(e => e.Id == id);
         }
 
     }
