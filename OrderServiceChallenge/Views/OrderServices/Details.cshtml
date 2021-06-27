@@ -35,7 +35,7 @@
             @Html.DisplayFor(model => model.ExecutionDate)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Employee.Name)
+            Name Employee
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Employee.Name)
@@ -45,6 +45,18 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Employee.CPF)
+        </dd>
+        <dt>
+            Company Name
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Company.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Company.CNPJ)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Company.CNPJ)
         </dd>
     </dl>
 </div>

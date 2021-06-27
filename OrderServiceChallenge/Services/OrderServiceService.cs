@@ -20,7 +20,7 @@ namespace OrderServiceChallenge.Services
 
         public async Task<List<OrderService>> FindAllAsync()
         {
-            return await _context.OrderService.ToListAsync();
+            return await _context.OrderService.Include(obj => obj.Employee).Include(obj => obj.Company).ToListAsync();
         }
 
         public async Task InsertAsync(OrderService obj)

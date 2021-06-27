@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace OrderServiceChallenge.Models
 {
-    public abstract class LegalPerson: Person
+    public abstract class LegalPerson : Person
     {
         public string CNPJ { get; set; }
+        [Display(Name = "Postal Code")]
         public string CEP { get; set; }
     }
 }
