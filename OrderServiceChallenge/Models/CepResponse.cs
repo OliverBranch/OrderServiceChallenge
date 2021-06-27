@@ -26,5 +26,7 @@ namespace OrderServiceChallenge.Models
         public string Ibge { get; set; }
         [JsonProperty("gia")]
         public string Gia { get; set; }
+        [JsonProperty("ddd")]
+        public string DDD { get; set; }
     }
 }

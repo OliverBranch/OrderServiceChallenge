@@ -1,0 +1,48 @@
+﻿@model OrderServiceChallenge.Models.OrderService
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>OrderService</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NumberOS" class="control-label"></label>
+                <input asp-for="NumberOS" class="form-control" />
+                <span asp-validation-for="NumberOS" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ServiceTitle" class="control-label"></label>
+                <input asp-for="ServiceTitle" class="form-control" />
+                <span asp-validation-for="ServiceTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Value" class="control-label"></label>
+                <input asp-for="Value" class="form-control" />
+                <span asp-validation-for="Value" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExecutionDate" class="control-label"></label>
+                <input asp-for="ExecutionDate" class="form-control" />
+                <span asp-validation-for="ExecutionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

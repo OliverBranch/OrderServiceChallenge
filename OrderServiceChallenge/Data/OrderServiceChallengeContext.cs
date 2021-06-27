@@ -19,5 +19,7 @@ namespace OrderServiceChallenge.Data
         public DbSet<LegalPerson> LegalPerson { get; set; }
 
         public DbSet<Company> Company { get; set; }
+
+        public DbSet<OrderService> OrderService { get; set; }
     }
 }

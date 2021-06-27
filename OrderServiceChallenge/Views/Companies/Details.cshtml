@@ -21,6 +21,12 @@
         <dd>
             @Html.DisplayFor(model => model.CNPJ)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address().Result.Cep)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address().Result.Cep)
+        </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.Address().Result.Street)
@@ -51,6 +57,12 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Address().Result.Ibge)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address().Result.DDD)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address().Result.DDD)
         </dd>
 
     </dl>
