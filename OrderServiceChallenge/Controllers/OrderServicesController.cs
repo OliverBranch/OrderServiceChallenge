@@ -9,6 +9,7 @@ using OrderServiceChallenge.Data;
 using OrderServiceChallenge.Models;
 using OrderServiceChallenge.Services;
 using OrderServiceChallenge.Models.ViewModels;
+using OrderServiceChallenge.Services.Exceptions;
 
 namespace OrderServiceChallenge.Controllers
 {
@@ -18,6 +19,8 @@ namespace OrderServiceChallenge.Controllers
         private readonly EmployeeService _employeeService;
         private readonly CompanyService _companyService;
         private readonly OrderServiceChallengeContext _context;
+
+        public OrderServiceViewModel OrderServiceViewModel { get; private set; }
 
         public OrderServicesController(OrderServiceService orderServiceService, EmployeeService employeeService, CompanyService companyService)
         {
@@ -83,12 +86,15 @@ namespace OrderServiceChallenge.Controllers
                 return NotFound();
             }
 
-            var orderService = await _context.OrderService.FindAsync(id);
+            var orderService = await _orderServiceService.FindByIdAsync(id.Value);
             if (orderService == null)
             {
                 return NotFound();
             }
-            return View(orderService);
+            List<Employee> employees = await _employeeService.FindAllAsync();
+            List<Company> companies = await _companyService.FindAllAsync();
+            OrderServiceViewModel viewModel = new OrderServiceViewModel { OrderService = orderService, Employees = employees, Companies = companies };
+            return View(viewModel);
         }
 
         // POST: OrderServices/Edit/5
@@ -96,34 +102,26 @@ namespace OrderServiceChallenge.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NumberOS,ServiceTitle,Value,ExecutionDate")] OrderService orderService)
+        public async Task<IActionResult> Edit(int id, OrderService orderService)
         {
             if (id != orderService.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(orderService);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderServiceExists(orderService.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await _orderServiceService.UpdateAsync(orderService);
                 return RedirectToAction(nameof(Index));
             }
-            return View(orderService);
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest();
+            }
         }
 
         // GET: OrderServices/Delete/5
