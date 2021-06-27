@@ -43,7 +43,7 @@ namespace OrderServiceChallenge.Services
 
         public async Task UpdateAsync(Employee obj)
         {
-            bool hasAny = _context.Employee.Any(x => x.Id == obj.Id);
+            bool hasAny = await _context.Employee.AnyAsync(x => x.Id == obj.Id);
             if(!hasAny)
             {
                 throw new NotFoundException("Id not found");
