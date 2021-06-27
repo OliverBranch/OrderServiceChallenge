@@ -8,6 +8,9 @@ namespace OrderServiceChallenge.Models
 {
     public class Employee : Person
     {
+        [Required(ErrorMessage = "{0} Required")]
+        [StringLength(11, MinimumLength = 11, ErrorMessage = "A CPF must be 11 digits long")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:###-###-###-##}")]
         public string CPF { get; set; }
 
         public Employee()

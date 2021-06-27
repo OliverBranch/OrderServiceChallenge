@@ -10,12 +10,16 @@ namespace OrderServiceChallenge.Models
     {
         public int Id { get; set; }
         [Display(Name = "Nº OS")]
+        [Required(ErrorMessage = "{0} Required")]
         public string NumberOS { get; set; }
         [Display(Name = "Service Title")]
+        [Required(ErrorMessage = "{0} Required")]
         public string ServiceTitle { get; set; }
-        [DisplayFormat(DataFormatString = "{0:F2}")]
+        [Required(ErrorMessage = "{0} Required")]
+        [DataType(DataType.Currency)]
         public double Value { get; set; }
         [Display(Name = "Execution Date")]
+        [Required(ErrorMessage = "{0} Required")]
         [DisplayFormat(DataFormatString ="{0:dd/MM/yyyy}")]
         [DataType(DataType.Date)]
         public DateTime ExecutionDate { get; set; }
