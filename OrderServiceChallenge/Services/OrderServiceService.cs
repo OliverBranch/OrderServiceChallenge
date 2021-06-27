@@ -31,7 +31,7 @@ namespace OrderServiceChallenge.Services
 
         public async Task<OrderService> FindByIdAsync(int id)
         {
-            return await _context. OrderService.FirstOrDefaultAsync(obj => obj.Id == id);
+            return await _context.OrderService.Include(obj => obj.Employee).Include(obj=> obj.Company).FirstOrDefaultAsync(obj => obj.Id == id);
         }
 
         public async Task RemoveAsync(int id)

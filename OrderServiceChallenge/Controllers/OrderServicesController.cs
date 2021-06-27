@@ -42,8 +42,7 @@ namespace OrderServiceChallenge.Controllers
                 return NotFound();
             }
 
-            var orderService = await _context.OrderService
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var orderService = await _orderServiceService.FindByIdAsync(id.Value);
             if (orderService == null)
             {
                 return NotFound();
@@ -135,8 +134,7 @@ namespace OrderServiceChallenge.Controllers
                 return NotFound();
             }
 
-            var orderService = await _context.OrderService
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var orderService = await _orderServiceService.FindByIdAsync(id.Value);
             if (orderService == null)
             {
                 return NotFound();
@@ -150,9 +148,7 @@ namespace OrderServiceChallenge.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var orderService = await _context.OrderService.FindAsync(id);
-            _context.OrderService.Remove(orderService);
-            await _context.SaveChangesAsync();
+            await _orderServiceService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
