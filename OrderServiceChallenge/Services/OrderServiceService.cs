@@ -60,11 +60,29 @@ namespace OrderServiceChallenge.Services
             }
 
         }
-
         public bool OrderServiceExists(int id)
         {
             return _context.Employee.Any(e => e.Id == id);
         }
+
+        //Search Methods
+
+        public async Task<List<OrderService>> FindByDateAsync(DateTime? minDate, DateTime? maxDate)
+        {
+            var result = from obj in _context.OrderService select obj;
+
+            if (minDate.HasValue)
+                result = result.Where(x => x.ExecutionDate >= minDate.Value);
+
+            if (maxDate.HasValue)
+                result = result.Where(x => x.ExecutionDate <= maxDate.Value);
+
+            return await result.Include(x => x.Employee).Include(x => x.Company).OrderByDescending(x => x.ExecutionDate).ToListAsync();
+        }
+
+
+
+
 
     }
 }
