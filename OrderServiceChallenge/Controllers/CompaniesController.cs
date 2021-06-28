@@ -7,9 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OrderServiceChallenge.Data;
 using OrderServiceChallenge.Models;
-//using OrderServiceChallenge.Models.Interfaces;
 using OrderServiceChallenge.Services;
-//using Refit;
 
 namespace OrderServiceChallenge.Controllers
 {

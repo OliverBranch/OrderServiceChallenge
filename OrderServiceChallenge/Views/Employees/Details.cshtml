@@ -21,7 +21,7 @@
             @Html.DisplayNameFor(model => model.CPF)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.CPF)
+            @Convert.ToInt64(Model.CPF).ToString(@"000\.000\.000\-00")
         </dd>
     </dl>
 </div>

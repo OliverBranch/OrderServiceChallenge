@@ -41,10 +41,11 @@
             @Html.DisplayFor(model => model.Employee.Name)
         </dd>
         <dt>
+             
             @Html.DisplayNameFor(model => model.Employee.CPF)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Employee.CPF)
+            @Convert.ToUInt64(Model.Employee.CPF).ToString(@"000\.000\.000\-00")
         </dd>
         <dt>
             Company Name
@@ -56,11 +57,15 @@
             @Html.DisplayNameFor(model => model.Company.CNPJ)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Company.CNPJ)
+            @Convert.ToUInt64(Model.Company.CNPJ).ToString(@"00\.000\.000\/0000\-00")
         </dd>
     </dl>
 </div>
 <div>
+    <a asp-action="PdfGenerator" asp-route-id="@Model.Id" class="btn btn-default">Generate PDF</a> |
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a href="javascript: history.go(-1)">Go Back</a>
+
+
+
 </div>

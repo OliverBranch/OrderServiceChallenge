@@ -33,7 +33,7 @@ namespace OrderServiceChallenge.Models
         {
             var address = RestService.For<ICepApiService>("http://viacep.com.br").GetAddressAsync(CEP);
 
-            if (address.Result.Cep != null)
+            if (address.Result != null)
             {
                 return true;
             }

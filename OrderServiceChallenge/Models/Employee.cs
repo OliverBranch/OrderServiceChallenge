@@ -24,5 +24,10 @@ namespace OrderServiceChallenge.Models
             CPF = cpf;
         }
 
+        public string FormatCPF()
+        {
+            return Convert.ToUInt64(CPF).ToString(@"000\.000\.000\-00");
+        }
+
     }
 }

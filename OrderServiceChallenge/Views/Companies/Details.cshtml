@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Details";
+    var address = Model.Address();
 }
 <h2>Details</h2>
 
@@ -19,50 +20,50 @@
             @Html.DisplayNameFor(model => model.CNPJ)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.CNPJ)
+            @Convert.ToUInt64(Model.CNPJ).ToString(@"00\.000\.000\/0000\-00")
         </dd>
         <dt>
             CEP
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Address().Result.Cep)
+            @Html.DisplayFor(model => address.Result.Cep)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Address().Result.Street)
+            @Html.DisplayNameFor(model => address.Result.Street)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Address().Result.Street)
+            @Html.DisplayFor(model => address.Result.Street)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Address().Result.District)
+            @Html.DisplayNameFor(model => address.Result.District)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Address().Result.District)
+            @Html.DisplayFor(model => address.Result.District)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Address().Result.Local)
+            @Html.DisplayNameFor(model => address.Result.Local)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Address().Result.Local)
+            @Html.DisplayFor(model => address.Result.Local)
         </dd>
         <dt>
             UF
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Address().Result.Uf)
+            @Html.DisplayFor(model => address.Result.Uf)
         </dd>
         <dt>
             IBGE
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Address().Result.Ibge)
+            @Html.DisplayFor(model => address.Result.Ibge)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Address().Result.DDD)
+            @Html.DisplayNameFor(model => address.Result.DDD)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Address().Result.DDD)
+            @Html.DisplayFor(model => address.Result.DDD)
         </dd>
 
     </dl>

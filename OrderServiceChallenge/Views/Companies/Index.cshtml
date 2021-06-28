@@ -31,7 +31,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CNPJ)
+            @Convert.ToUInt64(item.CNPJ).ToString(@"00\.000\.000\/0000\-00")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CEP)
