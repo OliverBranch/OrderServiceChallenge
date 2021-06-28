@@ -77,7 +77,46 @@ namespace OrderServiceChallenge.Services
             if (maxDate.HasValue)
                 result = result.Where(x => x.ExecutionDate <= maxDate.Value);
 
-            return await result.Include(x => x.Employee).Include(x => x.Company).OrderByDescending(x => x.ExecutionDate).ToListAsync();
+            return await result
+                .Include(x => x.Employee)
+                .Include(x => x.Company)
+                .OrderByDescending(x => x.ExecutionDate)
+                .ToListAsync();
+        }
+
+        public async Task<List<IGrouping<Company, OrderService>>> FindByDateCompanyAsync(DateTime? minDate, DateTime? maxDate)
+        {
+            var result = from obj in _context.OrderService select obj;
+
+            if (minDate.HasValue)
+                result = result.Where(x => x.ExecutionDate >= minDate.Value);
+
+            if (maxDate.HasValue)
+                result = result.Where(x => x.ExecutionDate <= maxDate.Value);
+
+            return await result
+                .Include(x => x.Employee)
+                .Include(x => x.Company)
+                .OrderByDescending(x => x.ExecutionDate)
+                .GroupBy(x => x.Company)
+                .ToListAsync();
+        }
+        public async Task<List<IGrouping<Employee, OrderService>>> FindByDateEmployeeAsync(DateTime? minDate, DateTime? maxDate)
+        {
+            var result = from obj in _context.OrderService select obj;
+
+            if (minDate.HasValue)
+                result = result.Where(x => x.ExecutionDate >= minDate.Value);
+
+            if (maxDate.HasValue)
+                result = result.Where(x => x.ExecutionDate <= maxDate.Value);
+
+            return await result
+                .Include(x => x.Employee)
+                .Include(x => x.Company)
+                .OrderByDescending(x => x.ExecutionDate)
+                .GroupBy(x => x.Employee)
+                .ToListAsync();
         }
 
 

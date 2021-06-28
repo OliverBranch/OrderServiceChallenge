@@ -182,13 +182,31 @@ namespace OrderServiceChallenge.Controllers
             var result = await _orderServiceService.FindByDateAsync(minDate, maxDate);
             return View(result);
         }
-        public IActionResult CompanySearch()
+        public async Task<IActionResult> CompanySearch(DateTime? minDate, DateTime? maxDate)
         {
-            return View();
+            if (!minDate.HasValue)
+                minDate = new DateTime(DateTime.Now.Year, 1, 1);
+            if (!maxDate.HasValue)
+                maxDate = DateTime.Now;
+
+            ViewData["minDate"] = minDate.Value.ToString("yyy-MM-dd");
+            ViewData["maxDate"] = maxDate.Value.ToString("yyy-MM-dd");
+
+            var result = await _orderServiceService.FindByDateCompanyAsync(minDate, maxDate);
+            return View(result);
         }
-        public IActionResult EmployeeSearch()
+        public async Task<IActionResult> EmployeeSearch(DateTime? minDate, DateTime? maxDate)
         {
-            return View();
+            if (!minDate.HasValue)
+                minDate = new DateTime(DateTime.Now.Year, 1, 1);
+            if (!maxDate.HasValue)
+                maxDate = DateTime.Now;
+
+            ViewData["minDate"] = minDate.Value.ToString("yyy-MM-dd");
+            ViewData["maxDate"] = maxDate.Value.ToString("yyy-MM-dd");
+
+            var result = await _orderServiceService.FindByDateEmployeeAsync(minDate, maxDate);
+            return View(result);
         }
 
     }
