@@ -20,14 +20,14 @@ namespace OrderServiceChallenge.Controllers
             _employeeService = employeeService;
         }
 
-        // GET: Employees
+        // GET: Index
         public async Task<IActionResult> Index()
         {
             var list = await _employeeService.FindAllAsync();
             return View(list);
         }
 
-        // GET: Employees/Details/5
+        // GET: Details
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,15 +44,13 @@ namespace OrderServiceChallenge.Controllers
             return View(employee);
         }
 
-        // GET: Employees/Create
+        // GET: Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Employees/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CPF,Id,Name")] Employee employee)
@@ -65,7 +63,7 @@ namespace OrderServiceChallenge.Controllers
             return View(employee);
         }
 
-        // GET: Employees/Edit/5
+        // GET: Edit
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,9 +79,7 @@ namespace OrderServiceChallenge.Controllers
             return View(employee);
         }
 
-        // POST: Employees/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CPF,Id,Name")] Employee employee)
@@ -115,7 +111,7 @@ namespace OrderServiceChallenge.Controllers
             return View(employee);
         }
 
-        // GET: Employees/Delete/5
+        // GET: Delete
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -132,7 +128,7 @@ namespace OrderServiceChallenge.Controllers
             return View(employee);
         }
 
-        // POST: Employees/Delete/5
+        // POST: Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

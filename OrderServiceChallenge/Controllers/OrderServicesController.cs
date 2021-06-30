@@ -42,14 +42,14 @@ namespace OrderServiceChallenge.Controllers
 
         }
 
-        // GET: OrderServices
+        // GET: Index
         public async Task<IActionResult> Index()
         {
             var list = await _orderServiceService.FindAllAsync();
             return View(list);
         }
 
-        // GET: OrderServices/Details/
+        // GET: Details
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -67,7 +67,7 @@ namespace OrderServiceChallenge.Controllers
             return View(orderService);
         }
 
-        // GET: OrderServices/Create
+        // GET: Create
         public async Task<IActionResult> Create()
         {
             var employees = await _employeeService.FindAllAsync();
@@ -76,7 +76,7 @@ namespace OrderServiceChallenge.Controllers
             return View(viewModel);
         }
 
-        // POST: OrderServices/Create
+        // POST: Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(OrderService orderService)
@@ -89,7 +89,7 @@ namespace OrderServiceChallenge.Controllers
             return View(orderService);
         }
 
-        // GET: OrderServices/Edit/
+        // GET: Edit
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -108,7 +108,7 @@ namespace OrderServiceChallenge.Controllers
             return View(viewModel);
         }
 
-        // POST: OrderServices/Edit/
+        // POST: Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, OrderService orderService)
@@ -133,7 +133,7 @@ namespace OrderServiceChallenge.Controllers
             }
         }
 
-        // GET: OrderServices/Delete/
+        // GET: Delete
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -151,7 +151,7 @@ namespace OrderServiceChallenge.Controllers
             return View(orderService);
         }
 
-        // POST: OrderServices/Delete/
+        // POST: Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -162,6 +162,7 @@ namespace OrderServiceChallenge.Controllers
 
 
 
+        // Returns the error page
         public IActionResult Error(string message)
         {
             var viewModel = new ErrorViewModel
@@ -177,6 +178,7 @@ namespace OrderServiceChallenge.Controllers
             return View();
         }
 
+        //Simple Search of Order Service
         public async Task<IActionResult> SimpleSearch(DateTime? minDate, DateTime? maxDate)
         {
             if (!minDate.HasValue)
@@ -218,25 +220,110 @@ namespace OrderServiceChallenge.Controllers
         }
 
 
+        //Order Service Generator
 
-        public void PdfListGenerator()
+        public async Task<FileResult> PdfGenerator(int id)
         {
-            //FIleResult
+            var path = $"C:\\Users\\israel.barbosa\\source\\repos\\OrderServiceChallenge\\OrderServiceChallenge\\Data\\temp\\";
+            var orderService = await _orderServiceService.FindByIdAsync(id);
+
+            string line = null;
+            int line_number = 0;
+
+            using (StreamReader reader = new StreamReader(path + "orderservicetxt.txt"))
+            {
+                using (StreamWriter writer = new StreamWriter(path + "orderservicehtml.html"))
+                {
+
+
+                    //It Won't write as lines that i want to delete and lines that contain the text
+
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        line_number++;
+
+                        //if (line.Contains("href=\"/OrderServices/"))
+                        //   continue;
+
+
+                        if (line_number == 97)
+                        {
+                            writer.WriteLine($"<TD class=\"tr0 td2\"><P class=\"p2 ft3\">Nº OS: {orderService.NumberOS}</P></TD>");
+                            continue;
+                        }
+
+                        if (line_number == 103)
+                        {
+                            writer.WriteLine($"<TD rowspan = 2 class=\"tr0 td2\"><P class=\"p3 ft7\">Data da Execução: {orderService.ExecutionDate.ToString("dd/MM/yyyy")}</P></TD><TD class=\"tr1 td1\"><P class=\"p1 ft5\">&nbsp;</P></TD>");
+                            continue;
+                        }
+
+
+                        if (line_number == 122)
+                        {
+                            var addLine = $"<TD class=\"tr5 td3\"><P class=\"p1 ft3\">Nome: {orderService.Company.Name}</P></TD><TD class=\"tr5 td4\"><P class=\"p4 ft3\">CNPJ: {Convert.ToInt64(orderService.Company.CNPJ).ToString(@"000\.000\.000\-00")}</P></TD>";
+                            writer.WriteLine(addLine);
+                            continue;
+                        }
+
+
+                        if (line_number == 142)
+                        {
+                            writer.WriteLine($"<P class=\"p7 ft3\">Funcionário: {orderService.Employee.Name}</P> <P class=\"p8 ft3\">CPF: {Convert.ToInt64(orderService.Employee.CPF).ToString(@"000\.000\.000\-00")}</P>");
+                            continue;
+                        }
+                        if (line_number == 156)
+                        {
+                            writer.WriteLine($"<TD class=\"tr5 td5\"><P class=\"p1 ft6\">Valor dos serviços:</P></TD><TD class=\"tr5 td6\"><P class=\"p16 ft13\">${orderService.Value * 0.7}</P></TD>");
+                            continue;
+                        }
+                        if (line_number == 160)
+                        {
+                            writer.WriteLine($"<TD class=\"tr7 td5\"><P class=\"p1 ft14\">Valor de peças/produtos:</P></TD><TD class=\"tr7 td6\"><P class=\"p16 ft13\">${orderService.Value * 0.3}</P></TD>");
+                            continue;
+                        }
+
+                        if (line_number == 164)
+                        {
+                            writer.WriteLine($"<TD class=\"tr8 td5\"><P class=\"p1 ft3\">Valor total:</P></TD><TD class=\"tr8 td6\"><P class=\"p16 ft3\">${orderService.Value}</P></TD>");
+                            continue;
+                        }
+
+                        writer.WriteLine(line);
+
+    
+            	
+
+
+
+
+                    }
+                }
+            }
+
+
+
+
+
+
+
+            await RenderIronPdfAsync(path + "orderservicehtml.html", path + "OrderService.pdf");
+
+            byte[] bytes = await PdfToBytesAsync(path + "OrderService.pdf");
+            return File(bytes, "text/pain", "OrderService.pdf");
+
 
         }
 
 
-        public FileResult Test()
+        // Text editing and pdf rendering
+        public async Task<FileResult> PdfListGenerator()
         {
 
             var path = $"C:\\Users\\israel.barbosa\\source\\repos\\OrderServiceChallenge\\OrderServiceChallenge\\Data\\temp\\";
             using (WebClient client = new WebClient())
             {
                 client.DownloadFile("https://localhost:5001/OrderServices", path + "index.txt");
-
-
-
-
             }
 
 
@@ -250,6 +337,9 @@ namespace OrderServiceChallenge.Controllers
                 using (StreamWriter writer = new StreamWriter(path + "indexout.html"))
                 {
                     writer.WriteLine(addline);
+
+                    //It Won't write as lines that i want to delete and lines that contain the text
+
                     while ((line = reader.ReadLine()) != null)
                     {
                         line_number++;
@@ -268,19 +358,36 @@ namespace OrderServiceChallenge.Controllers
                     }
                 }
             }
-            var Renderer = new IronPdf.HtmlToPdf();
-            var PDF = Renderer.RenderHTMLFileAsPdf(path+"indexout.html");
-            var OutputPath = path+"List.pdf";
-            PDF.SaveAs(OutputPath);
+            await RenderIronPdfAsync(path + "indexout.html", path + "list.pdf");
 
-            /* ASPOSE
-             * HtmlLoadOptions htmloptions = new HtmlLoadOptions();
-            Document doc = new Document(path+ "indexout.html", htmloptions);
-            doc.Save(path + "List.pdf");*/
-
-            byte[] bytes = System.IO.File.ReadAllBytes(path+"List.pdf");
+            byte[] bytes = await PdfToBytesAsync(path + "List.pdf");
             return File(bytes, "text/pain", "testando.pdf");
 
+        }
+
+        //Convert pdf to Byte[]
+        public async Task<byte[]> PdfToBytesAsync(string path)
+        {
+            byte[] bytes = await System.IO.File.ReadAllBytesAsync(path);
+            return bytes;
+
+        }
+
+        //Render Html to Pdf using IronPDF
+        public async Task RenderIronPdfAsync(string path, string outputPath)
+        {
+            var render = new IronPdf.HtmlToPdf();
+            var pdf = await render.RenderHTMLFileAsPdfAsync(path);
+            pdf.SaveAs(outputPath);
+
+        }
+
+        //Render Html to Pdf using Aspose
+        public void RenderAsposePdf(string path, string outputPath)
+        {
+            HtmlLoadOptions htmloptions = new HtmlLoadOptions();
+            Document doc = new Document(path, htmloptions);
+            doc.Save(outputPath);
         }
 
     }

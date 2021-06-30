@@ -15,6 +15,7 @@
     <None Remove="Data\temp\Order 1.pdf" />
     <None Remove="Data\temp\Order 2.pdf" />
     <None Remove="Data\temp\OrderList.pdf" />
+    <None Remove="Views\OrderServices\bootstrap-darkly.css" />
   </ItemGroup>
 
   <ItemGroup>

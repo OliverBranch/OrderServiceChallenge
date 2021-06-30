@@ -55,7 +55,7 @@
                 </p>
                 <div class="navbar-right">
                     <a class="btn btn-info navbar-btn" href="/Home/Privacy">Learn More</a>
-                    <button type="button" class="btn btn-default navbar-btn" data-cookie-string=".AspNet.Consent=yes; expires=Wed, 29 Jun 2022 18:38:14 GMT; path=/; secure; samesite=lax">Accept</button>
+                    <button type="button" class="btn btn-default navbar-btn" data-cookie-string=".AspNet.Consent=yes; expires=Thu, 30 Jun 2022 16:16:17 GMT; path=/; secure; samesite=lax">Accept</button>
                 </div>
             </div>
         </div>
@@ -78,7 +78,7 @@
 <p>
     <a class="btn btn-default" href="/OrderServices/Create">Create New</a>|
     <a id="cmd" class="btn btn-default" href="/OrderServices/Search">Search</a>|
-    <a class="btn btn-default" href="/OrderServices/Test">Generate PDF</a>
+    <a class="btn btn-default" href="/OrderServices/PdfListGenerator">Generate PDF</a>
 </p>
 <table class="table table-striped table-hover">
     <thead>
@@ -102,28 +102,6 @@
         </tr>
     </thead>
     <tbody>
-            <tr>
-                <td>
-                    1
-                </td>
-                <td>
-                    Order 1
-                </td>
-                <th>
-                    Company A
-                </th>
-                <td>
-                    17/06/2021
-                </td>
-                <td>
-                    $500.00
-                </td>
-                <td>
-                    <a href="/OrderServices/Edit/1">Edit</a> |
-                    <a href="/OrderServices/Details/1">Details</a> |
-                    <a href="/OrderServices/Delete/1">Delete</a>
-                </td>
-            </tr>
             <tr>
                 <td>
                     2
