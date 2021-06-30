@@ -17,6 +17,12 @@ using System.Text;
 using System.Web;
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Drawing;
+using System.Net;
+using Microsoft.IdentityModel.Protocols;
+using System.IO;
+using IronPdf;
+using TheArtOfDev.HtmlRenderer.PdfSharp;
+
 
 namespace OrderServiceChallenge.Controllers
 {
@@ -43,7 +49,7 @@ namespace OrderServiceChallenge.Controllers
             return View(list);
         }
 
-        // GET: OrderServices/Details/5
+        // GET: OrderServices/Details/
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -71,8 +77,6 @@ namespace OrderServiceChallenge.Controllers
         }
 
         // POST: OrderServices/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(OrderService orderService)
@@ -85,7 +89,7 @@ namespace OrderServiceChallenge.Controllers
             return View(orderService);
         }
 
-        // GET: OrderServices/Edit/5
+        // GET: OrderServices/Edit/
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -104,9 +108,7 @@ namespace OrderServiceChallenge.Controllers
             return View(viewModel);
         }
 
-        // POST: OrderServices/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: OrderServices/Edit/
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, OrderService orderService)
@@ -131,7 +133,7 @@ namespace OrderServiceChallenge.Controllers
             }
         }
 
-        // GET: OrderServices/Delete/5
+        // GET: OrderServices/Delete/
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -149,7 +151,7 @@ namespace OrderServiceChallenge.Controllers
             return View(orderService);
         }
 
-        // POST: OrderServices/Delete/5
+        // POST: OrderServices/Delete/
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -217,153 +219,71 @@ namespace OrderServiceChallenge.Controllers
 
 
 
-        public FileResult PdfListGenerator()
+        public void PdfListGenerator()
         {
-            var list = _orderServiceService.FindAllAsync().Result;
+            //FIleResult
 
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
-            // New Document
-            PdfDocument document = new PdfDocument();
-            document.Info.Title = " Order Services ";
-
-            // New Page
-            PdfPage page = document.AddPage();
-
-
-
-            XGraphics gfx = XGraphics.FromPdfPage(page);
-
-            // Generate Header
-            gfx.DrawString("Order Service List", new XFont("Arial", 40, XFontStyle.Bold), XBrushes.Red, new XPoint(200, 70));
-            gfx.DrawLine(new XPen(XColor.FromArgb(50, 30, 200)), new XPoint(100, 100), new XPoint(500, 100));
-
-            //Generate Table
-            gfx.DrawString("Title", new XFont("Arial", 15, XFontStyle.Bold), XBrushes.Black, new XPoint(100, 280));
-            gfx.DrawString("Employee", new XFont("Arial", 15, XFontStyle.Bold), XBrushes.Black, new XPoint(250, 280));
-            gfx.DrawString("Company", new XFont("Arial", 15, XFontStyle.Bold), XBrushes.Black, new XPoint(400, 280));
-
-
-            gfx.DrawLine(new XPen(XColor.FromArgb(50, 30, 200)), new XPoint(50, 290), new XPoint(550, 290));
-
-            int currentYPositionValues = 300;
-            int currentYPositionLines = 310;
-
-            if (list.Count <= 20)
-            {
-                for (int i = 0; i < list.Count; i++)
-                {
-                    gfx.DrawString(list[i].ServiceTitle, new XFont("Arial", 15, XFontStyle.Bold), XBrushes.Black, new XPoint(100, currentYPositionValues));
-                    gfx.DrawString(list[i].Employee.Name, new XFont("Arial", 15, XFontStyle.Bold), XBrushes.Black, new XPoint(250, currentYPositionValues));
-                    gfx.DrawString(list[i].Company.Name, new XFont("Arial", 15, XFontStyle.Bold), XBrushes.Black, new XPoint(400, currentYPositionValues));
-                    gfx.DrawLine(new XPen(XColor.FromArgb(50, 30, 90)), new XPoint(50, currentYPositionLines), new XPoint(550, currentYPositionLines));
-
-                    currentYPositionValues += 20;
-                    currentYPositionLines += 20;
-                }
-
-            }
-            else
-            {
-                for (int i = 0; i < 15; i++)
-                {
-                    gfx.DrawString(list[i].ServiceTitle, new XFont("Arial", 15, XFontStyle.Bold), XBrushes.Black, new XPoint(100, currentYPositionValues));
-                    gfx.DrawString(list[i].Employee.Name, new XFont("Arial", 15, XFontStyle.Bold), XBrushes.Black, new XPoint(250, currentYPositionValues));
-                    gfx.DrawString(list[i].Company.Name, new XFont("Arial", 15, XFontStyle.Bold), XBrushes.Black, new XPoint(400, currentYPositionValues));
-                    gfx.DrawLine(new XPen(XColor.FromArgb(50, 30, 90)), new XPoint(50, currentYPositionLines), new XPoint(550, currentYPositionLines));
-
-                    currentYPositionValues += 20;
-                    currentYPositionLines += 20;
-                    list.Remove(list[i]);
-                }
-                page = document.AddPage();
-                gfx = XGraphics.FromPdfPage(page);
-                currentYPositionValues = 33;
-                currentYPositionLines = 40;
-
-                for (int i = 0; i < list.Count; i++)
-                {
-                    if (i != 0 && i % 30 == 0)
-                    {
-                        page = document.AddPage();
-                        gfx = XGraphics.FromPdfPage(page);
-                        currentYPositionValues = 33;
-                        currentYPositionLines = 40;
-                    }
-
-                    gfx.DrawString(list[i].ServiceTitle, new XFont("Arial", 15, XFontStyle.Bold), XBrushes.Black, new XPoint(100, currentYPositionValues));
-                    gfx.DrawString(list[i].Employee.Name, new XFont("Arial", 15, XFontStyle.Bold), XBrushes.Black, new XPoint(250, currentYPositionValues));
-                    gfx.DrawString(list[i].Company.Name, new XFont("Arial", 15, XFontStyle.Bold), XBrushes.Black, new XPoint(400, currentYPositionValues));
-                    gfx.DrawLine(new XPen(XColor.FromArgb(50, 30, 90)), new XPoint(50, currentYPositionLines), new XPoint(550, currentYPositionLines));
-
-                }
-
-
-
-            }
-
-
-
-
-
-
-            var path = $"C:\\Users\\israel.barbosa\\source\\repos\\OrderServiceChallenge\\OrderServiceChallenge\\Data\\temp\\OrderList.pdf";
-            document.Save(path);
-
-            byte[] bytes = System.IO.File.ReadAllBytes(path);
-            return File(bytes, "text/pain", "test.pdf");
         }
 
 
+        public FileResult Test()
+        {
+
+            var path = $"C:\\Users\\israel.barbosa\\source\\repos\\OrderServiceChallenge\\OrderServiceChallenge\\Data\\temp\\";
+            using (WebClient client = new WebClient())
+            {
+                client.DownloadFile("https://localhost:5001/OrderServices", path + "index.txt");
 
 
 
+
+            }
+
+
+            string line = null;
+            int line_number = 1;
+            int line_to_delete = 14 + 49 + 20;
+            string addline = "<!DOCTYPE html><html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Index - OrderServiceChallenge</title><link rel=\"stylesheet\" href=\"./completa_files/bootstrap-darkly.css\"><link rel=\"stylesheet\" href=\"./completa_files/site.css\"></head><body><div class=\"container body-content\"><h2> Orders </h2> ";
+
+            using (StreamReader reader = new StreamReader(path + "index.txt"))
+            {
+                using (StreamWriter writer = new StreamWriter(path + "indexout.html"))
+                {
+                    writer.WriteLine(addline);
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        line_number++;
+
+                        if (line.Contains("href=\"/OrderServices/"))
+                            continue;
+
+
+
+
+                        if (line_number <= line_to_delete)
+                            continue;
+
+                        writer.WriteLine(line);
+
+                    }
+                }
+            }
+            var Renderer = new IronPdf.HtmlToPdf();
+            var PDF = Renderer.RenderHTMLFileAsPdf(path+"indexout.html");
+            var OutputPath = path+"List.pdf";
+            PDF.SaveAs(OutputPath);
+
+            /* ASPOSE
+             * HtmlLoadOptions htmloptions = new HtmlLoadOptions();
+            Document doc = new Document(path+ "indexout.html", htmloptions);
+            doc.Save(path + "List.pdf");*/
+
+            byte[] bytes = System.IO.File.ReadAllBytes(path+"List.pdf");
+            return File(bytes, "text/pain", "testando.pdf");
+
+        }
 
     }
 }
 
 
-
-/* public FileResult PdfGenerator(int id)
-{
-    var obj = _orderServiceService.FindByIdAsync(id).Result;
-
-    /*StringBuilder sb = new StringBuilder();
-    sb.AppendLine($"Nº OS: {obj.NumberOS}");
-    sb.AppendLine($"Value: ${obj.Value}");
-    sb.AppendLine($"Execution Date: {obj.ExecutionDate}");
-    sb.AppendLine();
-    sb.AppendLine($"Employee: {obj.Employee.Name}");
-    sb.AppendLine($"CPF: {obj.Employee.CPF}");
-    sb.AppendLine();
-    sb.AppendLine($"Company: {obj.Company.Name}");
-    sb.AppendLine($"CNPJ: {obj.Company.CNPJ}");*/
-
-
-
-/*  Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
-  // New Document
-  PdfDocument document = new PdfDocument();
-
-  // New Page
-  PdfPage page = document.AddPage();
-
-  XGraphics gfx = XGraphics.FromPdfPage(page);
-
-  XFont font = new XFont("Arial", 20);
-
-  gfx.DrawString($"Nº OS: {obj.NumberOS}", font, XBrushes.Black,
-      new XRect(0, 0, page.Width, page.Height),
-      XStringFormats.BottomLeft); // could be center right etc
-
-  gfx.DrawString($"Employee: {obj.Employee.Name}", font, XBrushes.DarkCyan,
-      new XPoint(100, 20));
-
-
-  var path = $"C:\\Users\\israel.barbosa\\source\\repos\\OrderServiceChallenge\\OrderServiceChallenge\\Data\\temp\\{obj.ServiceTitle}.pdf";
-  document.Save(path);
-
-  byte[] bytes = System.IO.File.ReadAllBytes(path);
-  return File(bytes, "text/pain", "test.pdf");*/
-//} 

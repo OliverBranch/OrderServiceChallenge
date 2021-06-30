@@ -5,14 +5,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\PdfResult.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Data\temp\ Order 1.pdf" />
+    <None Remove="Data\temp\index.html" />
+    <None Remove="Data\temp\indexout.txt" />
     <None Remove="Data\temp\Order 1.pdf" />
     <None Remove="Data\temp\Order 2.pdf" />
+    <None Remove="Data\temp\OrderList.pdf" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Aspose.Diagram" Version="21.6.0" />
     <PackageReference Include="Aspose.PDF" Version="21.6.0" />
+    <PackageReference Include="IronPdf" Version="2021.3.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.1.7" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.3" />
@@ -28,6 +36,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.10" />
     <PackageReference Include="PdfSharpCore" Version="1.2.17" />
+    <PackageReference Include="Polybioz.HtmlRenderer.PdfSharp.Core" Version="1.0.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.1" />
     <PackageReference Include="Refit" Version="5.2.1" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
@@ -35,7 +44,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\temp\" />
     <Folder Include="Scripts\" />
   </ItemGroup>
 
