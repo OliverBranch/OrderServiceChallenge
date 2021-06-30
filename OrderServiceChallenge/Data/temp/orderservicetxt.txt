@@ -83,7 +83,7 @@ body {margin-top: 0px;margin-left: 0px;}
 
 </STYLE>
 </HEAD>
-<IMG src="./LogoProsperi-300_300.png">
+
 <BODY>
 <DIV id="page_1">
 <DIV id="p1dimg1">

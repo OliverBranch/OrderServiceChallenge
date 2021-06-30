@@ -55,7 +55,7 @@
                 </p>
                 <div class="navbar-right">
                     <a class="btn btn-info navbar-btn" href="/Home/Privacy">Learn More</a>
-                    <button type="button" class="btn btn-default navbar-btn" data-cookie-string=".AspNet.Consent=yes; expires=Thu, 30 Jun 2022 16:16:17 GMT; path=/; secure; samesite=lax">Accept</button>
+                    <button type="button" class="btn btn-default navbar-btn" data-cookie-string=".AspNet.Consent=yes; expires=Thu, 30 Jun 2022 20:31:47 GMT; path=/; secure; samesite=lax">Accept</button>
                 </div>
             </div>
         </div>
@@ -210,6 +210,72 @@
                     <a href="/OrderServices/Edit/5">Edit</a> |
                     <a href="/OrderServices/Details/5">Details</a> |
                     <a href="/OrderServices/Delete/5">Delete</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    7
+                </td>
+                <td>
+                    Order 7
+                </td>
+                <th>
+                    Company A
+                </th>
+                <td>
+                    18/06/2021
+                </td>
+                <td>
+                    $1,500.00
+                </td>
+                <td>
+                    <a href="/OrderServices/Edit/7">Edit</a> |
+                    <a href="/OrderServices/Details/7">Details</a> |
+                    <a href="/OrderServices/Delete/7">Delete</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    8
+                </td>
+                <td>
+                    Order 8
+                </td>
+                <th>
+                    Company Z
+                </th>
+                <td>
+                    17/06/2021
+                </td>
+                <td>
+                    $3,000.00
+                </td>
+                <td>
+                    <a href="/OrderServices/Edit/8">Edit</a> |
+                    <a href="/OrderServices/Details/8">Details</a> |
+                    <a href="/OrderServices/Delete/8">Delete</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    10
+                </td>
+                <td>
+                    Order 10
+                </td>
+                <th>
+                    Company Z
+                </th>
+                <td>
+                    10/06/2021
+                </td>
+                <td>
+                    $5,000.00
+                </td>
+                <td>
+                    <a href="/OrderServices/Edit/9">Edit</a> |
+                    <a href="/OrderServices/Details/9">Details</a> |
+                    <a href="/OrderServices/Delete/9">Delete</a>
                 </td>
             </tr>
     </tbody>

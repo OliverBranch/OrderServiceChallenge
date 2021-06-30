@@ -244,7 +244,11 @@ namespace OrderServiceChallenge.Controllers
 
                         //if (line.Contains("href=\"/OrderServices/"))
                         //   continue;
-
+                             if (line_number == 86)
+                        {
+                            writer.WriteLine($"<a href=\"https://localhost:5001/OrderServices/Details/{orderService.Id}\"> <IMG src = \"./LogoProsperi-300_300.png\" ></a>");
+                            continue;
+                        }
 
                         if (line_number == 97)
                         {
